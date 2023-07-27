@@ -21,28 +21,28 @@ namespace WebAPINomina.Controllers
             return empleadoBusiness.ObtenerEmpleados();
         }
 
-        // GET: api/Empleado/5
+        // GET: api/Empleado/id
         public Empleado Get(int id)
         {
-            return new Empleado();
+            return empleadoBusiness.ObtenerEmpleado(id);
         }
 
         // POST: api/Empleado
-        public bool Post([FromBody]Empleado value)
+        public bool Post([FromBody]Empleado empleado)
         {
-            return true;
+            return empleadoBusiness.IngresarEmpleado(empleado);
         }
 
         // PUT: api/Empleado/
-        public bool Put([FromBody]Empleado value)
+        public bool Put([FromBody]Empleado empleado)
         {
-            return true;
+            return empleadoBusiness.ActualizarEmpleado(empleado);
         }
 
-        // DELETE: api/Empleado/5
+        // DELETE: api/Empleado/id
         public bool Delete(int id)
         {
-            return true;
+            return empleadoBusiness.EliminarEmpleado(id);
         }
     }
 }

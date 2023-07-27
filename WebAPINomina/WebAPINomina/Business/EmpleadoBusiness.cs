@@ -54,9 +54,9 @@ namespace WebAPINomina.Business
             Empleado empleado = new Empleado();
             using (SqlConnection conexion = new SqlConnection(conect.ruta))
             {
-                SqlCommand cmd = new SqlCommand("sp_obtenerEmpleados", conexion);
+                SqlCommand cmd = new SqlCommand("sp_obtenerEmpleado", conexion);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
+                cmd.Parameters.AddWithValue("@id", id);
                 try
                 {
                     conexion.Open();
@@ -99,7 +99,7 @@ namespace WebAPINomina.Business
                 cmd.Parameters.AddWithValue("@telefono", empleado.telefono);
                 cmd.Parameters.AddWithValue("@domicilio", empleado.domicilio);
                 cmd.Parameters.AddWithValue("@id_puesto", empleado.id_puesto);
-                cmd.Parameters.AddWithValue("@fecha_nac", empleado.fecha_nac);
+                cmd.Parameters.AddWithValue("@fecha_nac", empleado.fecha_nac.ToString("yyyy.MM.dd"));
 
                 try
                 {
@@ -127,7 +127,7 @@ namespace WebAPINomina.Business
                 cmd.Parameters.AddWithValue("@telefono", empleado.telefono);
                 cmd.Parameters.AddWithValue("@domicilio", empleado.domicilio);
                 cmd.Parameters.AddWithValue("@id_puesto", empleado.id_puesto);
-                cmd.Parameters.AddWithValue("@fecha_nac", empleado.fecha_nac);
+                cmd.Parameters.AddWithValue("@fecha_nac", empleado.fecha_nac.ToString("yyyy.MM.dd"));
 
                 try
                 {

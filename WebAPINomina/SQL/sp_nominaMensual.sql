@@ -1,4 +1,4 @@
-CREATE PROCEDURE sp_nominaMensual
+CREATE PROCEDURE sp_capturarMovimientos
 @id_empleado INT, @fecha DATE, @cant_movimientos INT, @faltas INT
 AS
 DECLARE
@@ -45,3 +45,24 @@ DECLARE
 	EXEC sp_nominaMensual @id_empleado = 1, @fecha = '2023-05-05',@cant_movimientos = 400, @faltas = 0
 
 	SELECT * FROM Mov_NominaMensual
+
+GO
+
+ALTER PROCEDURE sp_nominaMensual
+@id_empleado INT, @fecha DATE
+AS
+	SELECT
+			id,
+			id_empleado,
+			mes,
+			ano,
+			cant_movimientos,
+			faltas,
+			sueldo_bruto,
+			retencion_ISR,
+			saldo_vales,
+			sueldo_neto
+	FROM Mov_NominaMensual
+	WHERE @id_empleado = id_empleado AND mes = MONTH(@fecha) AND ano = YEAR(@fecha)
+
+select * from Mov_NominaMensual where id_empleado = 1 AND mes = MONTH('2023-05-05') AND ano = YEAR('2023-05-05')
