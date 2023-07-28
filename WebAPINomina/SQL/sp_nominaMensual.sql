@@ -1,5 +1,5 @@
-CREATE PROCEDURE sp_capturarMovimientos
-@id_empleado INT, @fecha DATE, @cant_movimientos INT, @faltas INT
+ALTER PROCEDURE sp_capturarMovimientos
+@id_empleado INT, @fecha DATE, @cant_entregas INT, @faltas INT
 AS
 DECLARE
 	@sueldo_bruto DECIMAL(10,2),
@@ -10,10 +10,10 @@ DECLARE
 	@horas_trabajadas INT,
 	@vales DECIMAL(10,2),
 	@sueldo_neto DECIMAL(10,2),
-	@bono_movimientos DECIMAL(10,2)
+	@bono_entregas DECIMAL(10,2)
 
 	SET @horas_trabajadas = ((24 - @faltas) * 8)
-	SET @bono_movimientos = (@cant_movimientos * 5)
+	SET @bono_entregas = (@cant_entregas * 5)
 
 	SET @sueldo_horas = (SELECT (Puestos.sueldo_hora * @horas_trabajadas) FROM Cat_empleados
 						INNER JOIN Cat_puestos AS Puestos ON Puestos.id = Cat_empleados.id_puesto
@@ -23,7 +23,7 @@ DECLARE
 						INNER JOIN Cat_puestos AS Puestos ON Puestos.id = Cat_empleados.id_puesto
 						WHERE @id_empleado = Cat_empleados.id)
 
-	SET @sueldo_bruto = @sueldo_horas + @sueldo_horas_bono + @bono_movimientos
+	SET @sueldo_bruto = @sueldo_horas + @sueldo_horas_bono + @bono_entregas
 
 	IF @sueldo_bruto > 10000
 		BEGIN
@@ -37,8 +37,8 @@ DECLARE
 	SET @sueldo_neto = @sueldo_bruto - @ISR
 	SET @vales = (@sueldo_bruto * 0.04)
 
-	INSERT INTO Mov_NominaMensual (id_empleado, mes, ano, cant_movimientos, faltas, sueldo_bruto, retencion_ISR, saldo_vales, sueldo_neto)
-	VALUES (@id_empleado, MONTH(@fecha), YEAR(@fecha), @cant_movimientos, @faltas, @sueldo_bruto, @ISR, @vales, @sueldo_neto)
+	INSERT INTO Mov_NominaMensual (id_empleado, mes, ano, horas_trabajadas, cant_entregas, pago_entregas, pago_bonos, sueldo_horas, sueldo_bruto, retencion_ISR, saldo_vales, sueldo_neto)
+	VALUES (@id_empleado, MONTH(@fecha), YEAR(@fecha), @horas_trabajadas, @cant_entregas, @bono_entregas, @sueldo_horas_bono, @sueldo_horas,@sueldo_bruto, @ISR, @vales, @sueldo_neto)
 	
 
 
@@ -48,7 +48,7 @@ DECLARE
 
 GO
 
-ALTER PROCEDURE sp_nominaMensual
+CREATE PROCEDURE sp_nominaMensual
 @id_empleado INT, @fecha DATE
 AS
 	SELECT
@@ -56,8 +56,11 @@ AS
 			id_empleado,
 			mes,
 			ano,
-			cant_movimientos,
-			faltas,
+			horas_trabajadas,
+			cant_entregas,
+			pago_entregas,
+			pago_bonos,
+			sueldo_horas,
 			sueldo_bruto,
 			retencion_ISR,
 			saldo_vales,

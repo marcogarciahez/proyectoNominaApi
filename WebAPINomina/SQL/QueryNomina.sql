@@ -25,8 +25,11 @@ CREATE TABLE Mov_NominaMensual(
 	id_empleado INT NOT NULL, 
 	mes INT NOT NULL,
 	ano INT NOT NULL,
-	cant_movimientos INT NOT NULL,
-	faltas INT NOT NULL,
+	horas_trabajadas INT NOT NULL,
+	cant_entregas INT NOT NULL,
+	pago_entregas DECIMAL(10,2) NOT NULL,
+	pago_bonos DECIMAL(10,2) NOT NULL,
+	sueldo_horas DECIMAL(10,2) NOT NULL,
 	sueldo_bruto DECIMAL(10,2) NOT NULL,
 	retencion_ISR DECIMAL(10,2) NOT NULL,
 	saldo_vales DECIMAL(10,2) NOT NULL,
@@ -43,6 +46,3 @@ INSERT INTO Cat_puestos (nombre,sueldo_hora,bono_hora) VALUES('Auxiliar',30,0)
 SELECT * FROM Cat_puestos
 
 INSERT INTO Cat_empleados (apellido_pat, apellido_mat, nombre, telefono, domicilio, id_puesto, fecha_nac) VALUES('Garcia','Hernandez','Roberto Marco','6673030950','Paseo Shiraz 988',1,'1999-04-09')
-
-SELECT * FROM Cat_empleados
-

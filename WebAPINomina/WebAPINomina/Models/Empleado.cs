@@ -14,6 +14,7 @@ namespace WebAPINomina.Models
         public string telefono { get; set; }
         public string domicilio { get; set; }
         public int id_puesto { get; set; }
+        public string nombre_puesto { get; set; }
         public DateTime fecha_nac { get; set; }
     }
 }

@@ -66,7 +66,23 @@ AS
 
 GO
 
-CREATE PROCEDURE sp_obtenerEmpleados
+ALTER PROCEDURE sp_obtenerEmpleados
+AS
+	SELECT  Empleado.id,
+			Empleado.apellido_pat,
+			Empleado.apellido_mat,
+			Empleado.nombre,
+			Empleado.telefono,
+			Empleado.domicilio,
+			Empleado.id_puesto,
+			Puestos.nombre AS nombre_puesto,
+			Empleado.fecha_nac
+	FROM Cat_empleados as Empleado
+	INNER JOIN Cat_puestos AS Puestos ON Puestos.id = id_puesto
+GO
+
+CREATE PROCEDURE sp_obtenerEmpleadosFiltro
+@nombre VARCHAR(100)
 AS
 	SELECT  id,
 			apellido_pat,
@@ -77,4 +93,6 @@ AS
 			id_puesto,
 			fecha_nac
 	FROM Cat_empleados
+	WHERE (nombre+' '+apellido_pat+' '+apellido_mat) like '%'+@nombre+'%'
 GO
+

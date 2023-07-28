@@ -44,5 +44,10 @@ namespace WebAPINomina.Controllers
         {
             return empleadoBusiness.EliminarEmpleado(id);
         }
+
+        public Empleado Get(string nombre)
+        {
+            return empleadoBusiness.ObtenerEmpleadoFiltro(nombre);
+        }
     }
 }

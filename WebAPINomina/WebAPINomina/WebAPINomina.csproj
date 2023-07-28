@@ -93,11 +93,15 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Business\Conexion.cs" />
     <Compile Include="Business\EmpleadoBusiness.cs" />
+    <Compile Include="Business\Mov_NominaMensualBusiness.cs" />
+    <Compile Include="Business\PuestoBusiness.cs" />
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\Mov_NominaMensualController.cs" />
+    <Compile Include="Controllers\PuestoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CapturaMovimientoMensual.cs" />
     <Compile Include="Models\Empleado.cs" />
     <Compile Include="Models\Mov_NominaMensual.cs" />
     <Compile Include="Models\Puesto.cs" />

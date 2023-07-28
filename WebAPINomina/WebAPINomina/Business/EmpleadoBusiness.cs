@@ -9,12 +9,12 @@ namespace WebAPINomina.Business
 {
     public class EmpleadoBusiness
     {
-        Conexion conect = new Conexion();
+        Conexion connect = new Conexion();
         public List<Empleado> ObtenerEmpleados()
         {
             List<Empleado> listaEmpleados = new List<Empleado>();
 
-            using (SqlConnection conexion = new SqlConnection(conect.ruta))
+            using (SqlConnection conexion = new SqlConnection(connect.ruta))
             {
                 SqlCommand cmd = new SqlCommand("sp_obtenerEmpleados", conexion);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -36,6 +36,7 @@ namespace WebAPINomina.Business
                                 telefono = dr["telefono"].ToString(),
                                 domicilio = dr["domicilio"].ToString(),
                                 id_puesto = Convert.ToInt32(dr["id_puesto"]),
+                                nombre_puesto = dr["nombre_puesto"].ToString(),
                                 fecha_nac = Convert.ToDateTime(dr["fecha_nac"])
                             });
                         }
@@ -52,7 +53,7 @@ namespace WebAPINomina.Business
         public Empleado ObtenerEmpleado(int id)
         {
             Empleado empleado = new Empleado();
-            using (SqlConnection conexion = new SqlConnection(conect.ruta))
+            using (SqlConnection conexion = new SqlConnection(connect.ruta))
             {
                 SqlCommand cmd = new SqlCommand("sp_obtenerEmpleado", conexion);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -87,9 +88,47 @@ namespace WebAPINomina.Business
             }
         }
 
+        public Empleado ObtenerEmpleadoFiltro(string nombre)
+        {
+            Empleado empleado = new Empleado();
+            using (SqlConnection conexion = new SqlConnection(connect.ruta))
+            {
+                SqlCommand cmd = new SqlCommand("sp_obtenerEmpleadosFiltro", conexion);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@nombre", nombre);
+                try
+                {
+                    conexion.Open();
+                    cmd.ExecuteNonQuery();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            empleado = new Empleado()
+                            {
+                                id = Convert.ToInt32(dr["id"]),
+                                apellido_pat = dr["apellido_pat"].ToString(),
+                                apellido_mat = dr["apellido_mat"].ToString(),
+                                nombre = dr["nombre"].ToString(),
+                                telefono = dr["telefono"].ToString(),
+                                domicilio = dr["domicilio"].ToString(),
+                                id_puesto = Convert.ToInt32(dr["id_puesto"]),
+                                fecha_nac = Convert.ToDateTime(dr["fecha_nac"])
+                            };
+                        }
+                    }
+                    return empleado;
+                }
+                catch (Exception ex)
+                {
+                    return empleado;
+                }
+            }
+        }
+
         public bool IngresarEmpleado(Empleado empleado)
         {
-            using (SqlConnection conexion = new SqlConnection(conect.ruta))
+            using (SqlConnection conexion = new SqlConnection(connect.ruta))
             {
                 SqlCommand cmd = new SqlCommand("sp_ingresarEmpleado", conexion);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -116,7 +155,7 @@ namespace WebAPINomina.Business
 
         public bool ActualizarEmpleado(Empleado empleado)
         {
-            using (SqlConnection conexion = new SqlConnection(conect.ruta))
+            using (SqlConnection conexion = new SqlConnection(connect.ruta))
             {
                 SqlCommand cmd = new SqlCommand("sp_actualizarEmpleado", conexion);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -144,7 +183,7 @@ namespace WebAPINomina.Business
 
         public bool EliminarEmpleado(int id)
         {
-            using (SqlConnection conexion = new SqlConnection(conect.ruta))
+            using (SqlConnection conexion = new SqlConnection(connect.ruta))
             {
                 SqlCommand cmd = new SqlCommand("sp_eliminarEmpleado", conexion);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
